@@ -71,6 +71,7 @@ __BEGIN_DECLS
 #    define PX4_CPU_UUID_WORD32_LENGTH              (PX4_CPU_UUID_BYTE_LENGTH/sizeof(uint32_t))
 #    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_ORDER {0,1,2}
 #    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_SIZE  (PX4_CPU_UUID_WORD32_LENGTH-1+(2*PX4_CPU_UUID_BYTE_LENGTH))
+#    define px4_savepanic(fileno, context, length) stm32_bbsram_savepanic(fileno, context, length)
 
 #    define px4_spibus_initialize(port_1based)       stm32_spibus_initialize(port_1based)
 
@@ -95,6 +96,10 @@ __BEGIN_DECLS
 #    include <chip.h>
 #    include <kinetis_spi.h>
 #    include <kinetis_i2c.h>
+
+#define kinetis_bbsram_savepanic(fileno, context, length) (0) // todo:Not implemented yet
+
+#    define px4_savepanic(fileno, context, length)   kinetis_bbsram_savepanic(fileno, context, length)
 
 /* bus_num is zero based on kinetis and must be translated from the legacy one based */
 
