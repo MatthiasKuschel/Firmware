@@ -71,6 +71,7 @@ __BEGIN_DECLS
 #    define PX4_CPU_UUID_WORD32_LENGTH              (PX4_CPU_UUID_BYTE_LENGTH/sizeof(uint32_t))
 #    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_ORDER {0,1,2}
 #    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_SIZE  (PX4_CPU_UUID_WORD32_LENGTH-1+(2*PX4_CPU_UUID_BYTE_LENGTH))
+
 #    define px4_savepanic(fileno, context, length) stm32_bbsram_savepanic(fileno, context, length)
 
 #    define px4_spibus_initialize(port_1based)       stm32_spibus_initialize(port_1based)
@@ -87,15 +88,33 @@ __BEGIN_DECLS
 
 #if defined(CONFIG_ARCH_CHIP_KINETIS)
 
-#    define STM32_SYSMEM_UID         0x40048054 // Fixme: using board crtrl
+#    // Fixme: using ??
 #    define PX4_BBSRAM_SIZE          2048
 #    define PX4_BBSRAM_GETDESC_IOCTL 0
+
 #    define GPIO_OUTPUT_SET          GPIO_OUTPUT_ONE
 #    define GPIO_OUTPUT_CLEAR        GPIO_OUTPUT_ZER0
 
 #    include <chip.h>
 #    include <kinetis_spi.h>
 #    include <kinetis_i2c.h>
+#    include <kinetis_uid.h>
+
+/* Kinetis defines the 128 bit UUID as
+ *  init32_t[4] that can be read as words
+ *  init32_t[0] PX4_CPU_UUID_ADDRESS[0] bits 127:96 (offset 0)
+ *  init32_t[1] PX4_CPU_UUID_ADDRESS[1] bits 95:64  (offset 4)
+ *  init32_t[2] PX4_CPU_UUID_ADDRESS[1] bits 63:32  (offset 8)
+ *  init32_t[3] PX4_CPU_UUID_ADDRESS[3] bits 31:0   (offset C)
+ *
+ *  PX4 uses the words in natural order MSB to LSB
+ *   word  [0]    [1]    [2]   [3]
+ *   bits 127:96  95-64  63-32, 31-00,
+ */
+#    define PX4_CPU_UUID_BYTE_LENGTH                KINETIS_UID_SIZE
+#    define PX4_CPU_UUID_WORD32_LENGTH              (PX4_CPU_UUID_BYTE_LENGTH/sizeof(uint32_t))
+#    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_ORDER {0,1,2,3}
+#    define PX4_CPU_UUID_WORD32_LEGACY_FORMAT_SIZE  (PX4_CPU_UUID_WORD32_LENGTH-1+(2*PX4_CPU_UUID_BYTE_LENGTH))
 
 #define kinetis_bbsram_savepanic(fileno, context, length) (0) // todo:Not implemented yet
 
