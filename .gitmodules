@@ -44,3 +44,6 @@
 [submodule "src/lib/HashMap"]
 	path = src/lib/HashMap
 	url = https://github.com/jgoppert/HashMap.git
+[submodule "Tools/fla_description"]
+	path = Tools/fla_description
+	url = https://github.com/dronecrew/fla_description.git
