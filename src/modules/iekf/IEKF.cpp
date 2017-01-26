@@ -44,7 +44,7 @@ IEKF::IEKF() :
 	_sensorMag("mag", betaMaxDefault, condMaxDefault, 50),
 	_sensorBaro("baro", betaMaxDefault, condMaxDefault, 50),
 	_sensorGps("gps", betaMaxDefault, condMaxDefault, 10),
-	_sensorAirspeed("airspeed", betaMaxDefault, condMaxDefault, 10),
+	_sensorAirspeed("airspeed", betaMaxDefault, condMaxDefault, 0),
 	_sensorFlow("flow", betaMaxDefault, condMaxDefault, 20),
 	_sensorSonar("sonar", betaMaxDefault, condMaxDefault, 20),
 	_sensorLidar("lidar", betaMaxDefault, condMaxDefault, 20),
